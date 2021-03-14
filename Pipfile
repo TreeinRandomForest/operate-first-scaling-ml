@@ -8,6 +8,7 @@ boto3 = "*"
 numpy = "*"
 kfp = "*"
 kfp-tekton = "*"
+torch = "*"
 
 [dev-packages]
 
