@@ -1,82 +1,80 @@
-# Copyright 2021 kubeflow.org
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+import os
 
 import kfp
 from kfp.components import func_to_container_op
-import kfp.dsl as dsl
-from kfp.dsl import _for_loop
+import kfp_tekton
+import config, utils
+
+BASE_IMAGE = config.BASE_IMAGE
+
+# Note: this is very specific to the type of model
+# and metric. Can generalize to arbitrary models later.
+
+#Using return values to structure DAG
+
+g = utils.get_client
+
+def f():
+    print("Hello")
+
+def download_data() -> int:
+    f()
+    #print(utils.get_client) #won't work since utils doesn't get resolved till runtime? figure it out
+    print(g) #note g.__module__ == 'utils' (in modules_to_capture)
+    print(utils.write_to_store) #still doesn't resolve
+
+    return 0
+
+def gen_hyperparam_grid() -> int:
+    '''Generate a list of namedtuples
+    of hyperparams to evaluate
+    '''
+
+    return 5
+
+def train_model(hyperparam_idx: int, retcode_download: int, N_gridsize: int) -> int:
+    '''Look up hyperparams from store
+    and train model
+    '''
+
+    return hyperparam_idx
+
+def find_best() -> int:
+    '''Return idx corresponding
+    to best model
+    '''
+
+    return 10
 
 
-class Coder:
-    def __init__(self, ):
-        self._code_id = 0
-
-    def get_code(self, ):
-        self._code_id += 1
-        return '{code:0{num_chars:}d}'.format(code=self._code_id, num_chars=_for_loop.LoopArguments.NUM_CODE_CHARS)
+download_data_op = func_to_container_op(download_data, base_image=BASE_IMAGE, packages_to_install=["boto3"], modules_to_capture=["utils"], use_code_pickling=True)
+gen_hyperparam_grid_op = func_to_container_op(gen_hyperparam_grid, base_image=BASE_IMAGE)
+train_model_op = func_to_container_op(train_model, base_image=BASE_IMAGE)
+find_best_op = func_to_container_op(find_best, base_image=BASE_IMAGE)
 
 
-dsl.ParallelFor._get_unique_id_code = Coder().get_code
+@kfp.dsl.pipeline(
+    name='Full pipeline'
+)
+def run_pipeline():
+    retcode_download = download_data_op()
+    
+    N_gridsize = gen_hyperparam_grid_op()
+    
+    N_parallel = 3
+    N_processed = 0
+    while N_processed < 10:
+        retcode_list = []
+
+        for i in list(range(3)): #try to be as close as possible to canonical python for DS people
+            retcode_model = train_model_op(i, retcode_download.output, N_gridsize.output)
+            retcode_list.append(retcode_model)
+
+        N_processed += 3
+
+    best_idx = find_best_op().after(*retcode_list)
 
 
-@func_to_container_op
-def produce_str() -> str:
-    return "Hello"
-
-
-@func_to_container_op
-def produce_list_of_dicts() -> list:
-    return ({"aaa": "aaa1", "bbb": "bbb1"}, {"aaa": "aaa2", "bbb": "bbb2"})
-
-
-@func_to_container_op
-def produce_list_of_strings() -> list:
-    return ("a", "z")
-
-
-@func_to_container_op
-def produce_list_of_ints() -> list:
-    return (1234567890, 987654321)
-
-
-@func_to_container_op
-def consume(param1):
-    print(param1)
-
-
-@kfp.dsl.pipeline()
-def parallelfor_item_argument_resolving():
-    produce_str_task = produce_str()
-    produce_list_of_strings_task = produce_list_of_strings()
-    produce_list_of_ints_task = produce_list_of_ints()
-    produce_list_of_dicts_task = produce_list_of_dicts()
-
-    with kfp.dsl.ParallelFor(produce_list_of_strings_task.output) as loop_item:
-        consume(produce_list_of_strings_task.output)
-        consume(loop_item)
-        consume(produce_str_task.output)
-
-    with kfp.dsl.ParallelFor(produce_list_of_ints_task.output) as loop_item:
-        consume(produce_list_of_ints_task.output)
-        consume(loop_item)
-
-    with kfp.dsl.ParallelFor(produce_list_of_dicts_task.output) as loop_item:
-        consume(produce_list_of_dicts_task.output)
-        # consume(loop_item) # Cannot use the full loop item when it's a dict
-        consume(loop_item.aaa)
-
-
-if __name__ == '__main__':
-    from kfp_tekton.compiler import TektonCompiler
-    TektonCompiler().compile(parallelfor_item_argument_resolving, __file__.replace('.py', '.yaml'))
+#kfp.compiler.Compiler().compile(run_all, 'run_all.zip')
+from kfp_tekton.compiler import TektonCompiler
+TektonCompiler().compile(run_pipeline, f'{os.path.basename(__file__)}.yaml')
