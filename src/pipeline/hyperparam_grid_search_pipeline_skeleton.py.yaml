@@ -1,0 +1,1394 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: full-pipeline
+  annotations:
+    tekton.dev/output_artifacts: '{"download-data": [{"key": "artifacts/$PIPELINERUN/download-data/Output.tgz",
+      "name": "download-data-Output", "path": "/tmp/outputs/Output/data"}], "find-best":
+      [{"key": "artifacts/$PIPELINERUN/find-best/Output.tgz", "name": "find-best-Output",
+      "path": "/tmp/outputs/Output/data"}], "gen-hyperparam-grid": [{"key": "artifacts/$PIPELINERUN/gen-hyperparam-grid/Output.tgz",
+      "name": "gen-hyperparam-grid-Output", "path": "/tmp/outputs/Output/data"}],
+      "train-model": [{"key": "artifacts/$PIPELINERUN/train-model/Output.tgz", "name":
+      "train-model-Output", "path": "/tmp/outputs/Output/data"}], "train-model-10":
+      [{"key": "artifacts/$PIPELINERUN/train-model-10/Output.tgz", "name": "train-model-10-Output",
+      "path": "/tmp/outputs/Output/data"}], "train-model-11": [{"key": "artifacts/$PIPELINERUN/train-model-11/Output.tgz",
+      "name": "train-model-11-Output", "path": "/tmp/outputs/Output/data"}], "train-model-12":
+      [{"key": "artifacts/$PIPELINERUN/train-model-12/Output.tgz", "name": "train-model-12-Output",
+      "path": "/tmp/outputs/Output/data"}], "train-model-2": [{"key": "artifacts/$PIPELINERUN/train-model-2/Output.tgz",
+      "name": "train-model-2-Output", "path": "/tmp/outputs/Output/data"}], "train-model-3":
+      [{"key": "artifacts/$PIPELINERUN/train-model-3/Output.tgz", "name": "train-model-3-Output",
+      "path": "/tmp/outputs/Output/data"}], "train-model-4": [{"key": "artifacts/$PIPELINERUN/train-model-4/Output.tgz",
+      "name": "train-model-4-Output", "path": "/tmp/outputs/Output/data"}], "train-model-5":
+      [{"key": "artifacts/$PIPELINERUN/train-model-5/Output.tgz", "name": "train-model-5-Output",
+      "path": "/tmp/outputs/Output/data"}], "train-model-6": [{"key": "artifacts/$PIPELINERUN/train-model-6/Output.tgz",
+      "name": "train-model-6-Output", "path": "/tmp/outputs/Output/data"}], "train-model-7":
+      [{"key": "artifacts/$PIPELINERUN/train-model-7/Output.tgz", "name": "train-model-7-Output",
+      "path": "/tmp/outputs/Output/data"}], "train-model-8": [{"key": "artifacts/$PIPELINERUN/train-model-8/Output.tgz",
+      "name": "train-model-8-Output", "path": "/tmp/outputs/Output/data"}], "train-model-9":
+      [{"key": "artifacts/$PIPELINERUN/train-model-9/Output.tgz", "name": "train-model-9-Output",
+      "path": "/tmp/outputs/Output/data"}]}'
+    tekton.dev/input_artifacts: '{"train-model": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-10": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-11": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-12": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-2": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-3": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-4": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-5": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-6": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-7": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-8": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}], "train-model-9": [{"name": "download-data-Output",
+      "parent_task": "download-data"}, {"name": "gen-hyperparam-grid-Output", "parent_task":
+      "gen-hyperparam-grid"}]}'
+    tekton.dev/artifact_bucket: mlpipeline
+    tekton.dev/artifact_endpoint: minio-service.kubeflow:9000
+    tekton.dev/artifact_endpoint_scheme: http://
+    tekton.dev/artifact_items: '{"download-data": [["Output", "$(results.output.path)"]],
+      "find-best": [["Output", "$(results.output.path)"]], "gen-hyperparam-grid":
+      [["Output", "$(results.output.path)"]], "train-model": [["Output", "$(results.output.path)"]],
+      "train-model-10": [["Output", "$(results.output.path)"]], "train-model-11":
+      [["Output", "$(results.output.path)"]], "train-model-12": [["Output", "$(results.output.path)"]],
+      "train-model-2": [["Output", "$(results.output.path)"]], "train-model-3": [["Output",
+      "$(results.output.path)"]], "train-model-4": [["Output", "$(results.output.path)"]],
+      "train-model-5": [["Output", "$(results.output.path)"]], "train-model-6": [["Output",
+      "$(results.output.path)"]], "train-model-7": [["Output", "$(results.output.path)"]],
+      "train-model-8": [["Output", "$(results.output.path)"]], "train-model-9": [["Output",
+      "$(results.output.path)"]]}'
+    sidecar.istio.io/inject: "false"
+    pipelines.kubeflow.org/pipeline_spec: '{"name": "Full pipeline"}'
+spec:
+  pipelineSpec:
+    tasks:
+    - name: download-data
+      taskSpec:
+        steps:
+        - name: main
+          args: ['----output-paths', $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def download_data():
+
+                return 0
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Download data', description='')
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = download_data(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"implementation":
+              {"container": {"args": ["----output-paths", {"outputPath": "Output"}],
+              "command": ["sh", "-ec", "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def download_data():\n\n    return
+              0\n\ndef _serialize_int(int_value: int) -> str:\n    if isinstance(int_value,
+              str):\n        return int_value\n    if not isinstance(int_value, int):\n        raise
+              TypeError(''Value \"{}\" has type \"{}\" instead of int.''.format(str(int_value),
+              str(type(int_value))))\n    return str(int_value)\n\nimport argparse\n_parser
+              = argparse.ArgumentParser(prog=''Download data'', description='''')\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = download_data(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "name": "Download data", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: gen-hyperparam-grid
+      taskSpec:
+        steps:
+        - name: main
+          args: ['----output-paths', $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def gen_hyperparam_grid():
+                '''Generate a list of namedtuples
+                of hyperparams to evaluate
+                '''
+
+                return 5
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Gen hyperparam grid', description='Generate a list of namedtuples')
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = gen_hyperparam_grid(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Generate
+              a list of namedtuples", "implementation": {"container": {"args": ["----output-paths",
+              {"outputPath": "Output"}], "command": ["sh", "-ec", "program_path=$(mktemp)\necho
+              -n \"$0\" > \"$program_path\"\npython3 -u \"$program_path\" \"$@\"\n",
+              "def gen_hyperparam_grid():\n    ''''''Generate a list of namedtuples\n    of
+              hyperparams to evaluate\n    ''''''\n\n    return 5\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Gen
+              hyperparam grid'', description=''Generate a list of namedtuples'')\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = gen_hyperparam_grid(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "name": "Gen hyperparam grid", "outputs": [{"name": "Output", "type":
+              "Integer"}]}'}
+      timeout: 0s
+    - name: train-model
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '0', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-2
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '1', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-3
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '2', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-4
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '0', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-5
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '1', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-6
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '2', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-7
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '0', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-8
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '1', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-9
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '2', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-10
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '0', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-11
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '1', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: train-model-12
+      params:
+      - {name: download-data-Output, value: $(tasks.download-data.results.output)}
+      - {name: gen-hyperparam-grid-Output, value: $(tasks.gen-hyperparam-grid.results.output)}
+      taskSpec:
+        steps:
+        - name: main
+          args: [--hyperparam-idx, '2', --retcode-download, $(inputs.params.download-data-Output),
+            --N-gridsize, $(inputs.params.gen-hyperparam-grid-Output), '----output-paths',
+            $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def train_model(hyperparam_idx, retcode_download, N_gridsize):
+                '''Look up hyperparams from store
+                and train model
+                '''
+
+                return hyperparam_idx
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Train model', description='Look up hyperparams from store')
+            _parser.add_argument("--hyperparam-idx", dest="hyperparam_idx", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--retcode-download", dest="retcode_download", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("--N-gridsize", dest="N_gridsize", type=int, required=True, default=argparse.SUPPRESS)
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = train_model(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        params:
+        - {name: download-data-Output}
+        - {name: gen-hyperparam-grid-Output}
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Look
+              up hyperparams from store", "implementation": {"container": {"args":
+              ["--hyperparam-idx", {"inputValue": "hyperparam_idx"}, "--retcode-download",
+              {"inputValue": "retcode_download"}, "--N-gridsize", {"inputValue": "N_gridsize"},
+              "----output-paths", {"outputPath": "Output"}], "command": ["sh", "-ec",
+              "program_path=$(mktemp)\necho -n \"$0\" > \"$program_path\"\npython3
+              -u \"$program_path\" \"$@\"\n", "def train_model(hyperparam_idx, retcode_download,
+              N_gridsize):\n    ''''''Look up hyperparams from store\n    and train
+              model\n    ''''''\n\n    return hyperparam_idx\n\ndef _serialize_int(int_value:
+              int) -> str:\n    if isinstance(int_value, str):\n        return int_value\n    if
+              not isinstance(int_value, int):\n        raise TypeError(''Value \"{}\"
+              has type \"{}\" instead of int.''.format(str(int_value), str(type(int_value))))\n    return
+              str(int_value)\n\nimport argparse\n_parser = argparse.ArgumentParser(prog=''Train
+              model'', description=''Look up hyperparams from store'')\n_parser.add_argument(\"--hyperparam-idx\",
+              dest=\"hyperparam_idx\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--retcode-download\",
+              dest=\"retcode_download\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"--N-gridsize\",
+              dest=\"N_gridsize\", type=int, required=True, default=argparse.SUPPRESS)\n_parser.add_argument(\"----output-paths\",
+              dest=\"_output_paths\", type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = train_model(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "inputs": [{"name": "hyperparam_idx", "type": "Integer"}, {"name": "retcode_download",
+              "type": "Integer"}, {"name": "N_gridsize", "type": "Integer"}], "name":
+              "Train model", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      timeout: 0s
+    - name: find-best
+      taskSpec:
+        steps:
+        - name: main
+          args: ['----output-paths', $(results.output.path)]
+          command:
+          - sh
+          - -ec
+          - |
+            program_path=$(mktemp)
+            echo -n "$0" > "$program_path"
+            python3 -u "$program_path" "$@"
+          - |
+            def find_best():
+                '''Return idx corresponding
+                to best model
+                '''
+
+                return 10
+
+            def _serialize_int(int_value: int) -> str:
+                if isinstance(int_value, str):
+                    return int_value
+                if not isinstance(int_value, int):
+                    raise TypeError('Value "{}" has type "{}" instead of int.'.format(str(int_value), str(type(int_value))))
+                return str(int_value)
+
+            import argparse
+            _parser = argparse.ArgumentParser(prog='Find best', description='Return idx corresponding')
+            _parser.add_argument("----output-paths", dest="_output_paths", type=str, nargs=1)
+            _parsed_args = vars(_parser.parse_args())
+            _output_files = _parsed_args.pop("_output_paths", [])
+
+            _outputs = find_best(**_parsed_args)
+
+            _outputs = [_outputs]
+
+            _output_serializers = [
+                _serialize_int,
+
+            ]
+
+            import os
+            for idx, output_file in enumerate(_output_files):
+                try:
+                    os.makedirs(os.path.dirname(output_file))
+                except OSError:
+                    pass
+                with open(output_file, 'w') as f:
+                    f.write(_output_serializers[idx](_outputs[idx]))
+          image: docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime
+        results:
+        - {name: output, description: /tmp/outputs/Output/data}
+        metadata:
+          annotations: {pipelines.kubeflow.org/component_spec: '{"description": "Return
+              idx corresponding", "implementation": {"container": {"args": ["----output-paths",
+              {"outputPath": "Output"}], "command": ["sh", "-ec", "program_path=$(mktemp)\necho
+              -n \"$0\" > \"$program_path\"\npython3 -u \"$program_path\" \"$@\"\n",
+              "def find_best():\n    ''''''Return idx corresponding\n    to best model\n    ''''''\n\n    return
+              10\n\ndef _serialize_int(int_value: int) -> str:\n    if isinstance(int_value,
+              str):\n        return int_value\n    if not isinstance(int_value, int):\n        raise
+              TypeError(''Value \"{}\" has type \"{}\" instead of int.''.format(str(int_value),
+              str(type(int_value))))\n    return str(int_value)\n\nimport argparse\n_parser
+              = argparse.ArgumentParser(prog=''Find best'', description=''Return idx
+              corresponding'')\n_parser.add_argument(\"----output-paths\", dest=\"_output_paths\",
+              type=str, nargs=1)\n_parsed_args = vars(_parser.parse_args())\n_output_files
+              = _parsed_args.pop(\"_output_paths\", [])\n\n_outputs = find_best(**_parsed_args)\n\n_outputs
+              = [_outputs]\n\n_output_serializers = [\n    _serialize_int,\n\n]\n\nimport
+              os\nfor idx, output_file in enumerate(_output_files):\n    try:\n        os.makedirs(os.path.dirname(output_file))\n    except
+              OSError:\n        pass\n    with open(output_file, ''w'') as f:\n        f.write(_output_serializers[idx](_outputs[idx]))\n"],
+              "image": "docker.io/pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime"}},
+              "name": "Find best", "outputs": [{"name": "Output", "type": "Integer"}]}'}
+      runAfter: [train-model-10, train-model-11, train-model-12]
+      timeout: 0s
+  timeout: 0s
