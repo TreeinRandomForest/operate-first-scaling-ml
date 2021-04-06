@@ -1,4 +1,3 @@
-import numpy as np
 import boto3
 import pickle
 import config
@@ -10,7 +9,8 @@ def get_client(s3_access_key=config.S3_ACCESS_ID,
     client = boto3.client(service_name='s3',
                           aws_access_key_id = s3_access_key,
                           aws_secret_access_key = s3_secret_key, 
-                          endpoint_url=s3_endpoint_url)
+                          endpoint_url=s3_endpoint_url,
+                          verify=True)
 
     return client
 

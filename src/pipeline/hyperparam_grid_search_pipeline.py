@@ -5,6 +5,10 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 
+import kfp
+from kfp.components import func_to_container_op
+import kfp_tekton
+
 BASE_IMAGE = config.BASE_IMAGE
 S3_END_POINT = config.S3_END_POINT
 S3_ACCESS_ID = config.S3_ACCESS_ID
@@ -52,7 +56,6 @@ def download_data() -> int:
     '''
 
     client = get_client()
-    bucket_name = config.BUCKET_NAME
 
     def generate_binary_data(N_examples=1000, seed=None):
     #Generate N_examples points with two features each
@@ -106,7 +109,6 @@ def gen_hyperparam_grid() -> int:
     '''
 
     client = get_client()
-    bucket_name = config.BUCKET_NAME
 
     grid = []
     for num_hidden_layers in [1,2,3]:
@@ -134,14 +136,13 @@ def train_model(hyperparam_idx: int, retcode_download: int, N_gridsize: int) -> 
     print(f'Device = {device}')
 
     client = get_client()
-    bucket_name = config.BUCKET_NAME
 
     features_train = torch.from_numpy(read_from_store(bucket_name, 'features_train', client)).float()
     target_train = torch.from_numpy(read_from_store(bucket_name, 'target_train', client)).float()
     features_test = torch.from_numpy(read_from_store(bucket_name, 'features_test', client)).float()
     target_test = torch.from_numpy(read_from_store(bucket_name, 'target_test', client)).float()
 
-    conf = read_from_store(config.BUCKET_NAME, 'hyperparam_grid', client)[hyperparam_idx]
+    conf = read_from_store(bucket_name, 'hyperparam_grid', client)[hyperparam_idx]
     lr = float(conf.get('lr', 1e-2))
     N_epochs = int(conf.get('N_epochs', 1000))
     num_hidden_layers = int(conf.get('num_hidden_layers', 1))
@@ -203,41 +204,29 @@ def train_model(hyperparam_idx: int, retcode_download: int, N_gridsize: int) -> 
     test_loss = evaluate_model(model, features_test, target_test)
     print(f'Test  Loss : {test_loss}')
 
-    write_to_store(bucket_name, {'test_loss': test_loss.item(), 'model': model}, f'score_{hyperparam_idx}', client)
+    #write_to_store(bucket_name, {'test_loss': test_loss.item(), 'model': model}, f'score_{hyperparam_idx}', client)
+    write_to_store(bucket_name, {'test_loss': test_loss.item()}, f'score_{hyperparam_idx}', client)
 
     return hyperparam_idx
 
-def find_best(N_experiments: int) -> int:
+def find_best(N_experiments: int):
     '''Return idx corresponding
     to best model
     '''
-    bucket_name = config.BUCKET_NAME
     client = get_client()
-
-    grid = read_from_store(bucket_name, 'hyperparam_grid', client)
 
     results = []
     for i in range(N_experiments):
-        results.append(read_from_store(config.BUCKET_NAME, f'score_{i}', client))
+        results.append(read_from_store(bucket_name, f'score_{i}', client))
 
+    print(results)
     max_idx = np.argmax([i['test_loss'] for i in results])
-
-    return max_idx
-
-
-def list_results():
-    client = get_client()
-    
-    grid = read_from_store(config.BUCKET_NAME, 'hyperparam_grid', client)
-    for i in range(len(grid)): 
-        print(grid[i], read_from_store(config.BUCKET_NAME, f'score_{i}', client)['test_loss']) 
-
+    print(f'Best idx: {max_idx}')
 
 download_data_op = func_to_container_op(download_data, base_image=BASE_IMAGE, packages_to_install=["boto3"], modules_to_capture=["utils"], use_code_pickling=True)
 gen_hyperparam_grid_op = func_to_container_op(gen_hyperparam_grid, base_image=BASE_IMAGE, packages_to_install=["boto3"], modules_to_capture=["utils"], use_code_pickling=True)
 train_model_op = func_to_container_op(train_model, base_image=BASE_IMAGE, packages_to_install=["boto3"], modules_to_capture=["utils"], use_code_pickling=True)
 find_best_op = func_to_container_op(find_best, base_image=BASE_IMAGE, packages_to_install=["boto3"], modules_to_capture=["utils"], use_code_pickling=True)
-list_results_op = func_to_container_op(list_results, base_image=BASE_IMAGE, packages_to_install=["boto3"], modules_to_capture=["utils"], use_code_pickling=True)
 
 @kfp.dsl.pipeline(
     name='Full pipeline'
@@ -252,9 +241,7 @@ def run_pipeline():
         retcode_model = train_model_op(i, retcode_download.output, N_gridsize.output)
         retcode_list.append(retcode_model)
 
-    best_idx = find_best_op().after(*retcode_list)
-
-    list_results_op.after(best_idx)
+    best_idx = find_best_op(len(retcode_list)).after(*retcode_list)
 
     return best_idx
 
